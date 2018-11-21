@@ -1,0 +1,52 @@
+{extend name="index/index" /}
+{block name="lunbo"}{/block}
+{block name="content"}
+  <h1 class="t_nav"><span>您现在的位置是：首页 > 慢生活 > 程序人生</span><a href="/" class="n1">网站首页</a><a href="/" class="n2">慢生活</a></h1>
+  <div class="infos">
+    <div class="newsview">
+      <h3 class="news_title">{$article.article_title}</h3>
+      <div class="news_author"><span class="au01"><a href="mailto:dancesmiling@qq.com">李罡淳</a></span><span class="au02">{$article.article_addtime|date='Y-m-d'}</span><span class="au03">共<b><script src="/e/public/ViewClick/?classid=5&amp;id=816&amp;addclick=1"></script>{$article.article_pv}</b>人围观</span></div>
+      <div class="tags">
+   <!--       <a href="/e/tags/?tagname=%B8%F6%C8%CB%B2%A9%BF%CD&amp;tempid=13" target="_blank">个人博客</a> &nbsp;
+         <a href="/e/tags/?tagname=%D0%A1%CA%C0%BD%E7&amp;tempid=13" target="_blank">小世界</a> -->
+       </div>
+      <div class="news_about">
+      1.生命之灯因热情而点燃，生命之舟因拼搏而前行。<br>
+      2.如果心胸不似海，又怎能有海一样的事业。<br>
+      </div>
+      <div class="news_infos"> 
+        {$article.article_content|raw}
+
+       </div>
+    </div>
+    <div class="share"> </div>
+    <div class="nextinfo">
+      {if $up}
+      <p>上一篇：<a href="{:url('index/info/info',['id'=>$up.article_id])}">{$up.article_title}</a></p>
+      {else}
+      <p>上一篇：<a href="{:url('index/info/info',['id'=>$article.article_id])}">{$article.article_title}</a></p>
+      {/if}
+      {if $down}
+      <p>下一篇：<a href="{:url('index/info/info',['id'=>$down.article_id])}">{$down.article_title}</a></p>
+      {else}
+      <p>下一篇：<a href="{:url('index/info/info',['id'=>$article.article_id])}">{$article.article_title}</a></p>
+      {/if}
+
+    </div>
+<!--     <div class="otherlink">
+      <h2>相关文章</h2>
+      <ul>
+      {volist name='xgart' id='v'}
+        <li><a href="{:url('index/info/info',['id'=>$v.article_id])}" title="{$v.article_title}">{$v.article_title}</a></li>
+      {/volist}
+      </ul>
+    </div> -->
+<!--     <div class="news_pl">
+      <h2>文章评论</h2>
+      <ul>
+        <div class="gbko"> </div>
+      </ul>
+    </div> -->
+  </div>
+{/block}
+

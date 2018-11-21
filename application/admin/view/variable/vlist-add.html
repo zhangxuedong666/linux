@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+  
+  <head>
+    <meta charset="UTF-8">
+    <title>欢迎页面-X-admin2.0</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="/static/admin/css/font.css">
+    <link rel="stylesheet" href="/static/admin/css/xadmin.css">
+    <script type="text/javascript" src="/static/admin/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/admin/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/admin/js/xadmin.js"></script>
+  </head>
+  
+  <body>
+    <div class="x-body">
+        <button class="layui-btn" id="addvlist" data-name={$vname}>增加一行</button>
+        <button class="layui-btn" id="save" data-id="{$id}">保存</button>
+        <table class="layui-table">
+        <colgroup>
+          <col width="20%">
+          <col width="30%">
+          <col width="30%">
+          <col width="15%">
+        </colgroup>
+        <thead>
+          <tr>
+            <th>变量分类</th>
+            <th>变量名字</th>
+            <th>变量描述内容</th>
+            <th>删除</th>
+        </thead>
+        <tbody>
+          {if $dataList}
+          {volist name='dataList' id='v' key='k'}
+          <tr>
+            <td>{$v.variable_name}</td>
+            <td class="vlist_name" contenteditable="true">{$v.vlist_name}</td>
+            <td class="vlist_desc" contenteditable="true">{$v.vlist_desc}</td>
+            <td >
+              <a title="删除" class="delvlist" href="javascript:;">
+                <i class="layui-icon">&#xe640;</i>
+              </a>
+            </td>
+          </tr>
+          {/volist}
+          {/if}
+        </tbody>
+      </table>
+    </div>
+    <script>
+      $(function(){
+          $(document).on('click','#addvlist',function(){
+              var vname = $(this).data('name');
+              var del = '<a title="删除" class="delvlist" href="javascript:;"><i class="layui-icon">&#xe640;</i></a>';
+              var str = '<tr class="variable_id"><td>'+vname+'</td><td contenteditable="true" class="vlist_name"></td><td contenteditable="true" class="vlist_desc"></td><td>'+del+'</td></tr>';
+              $('table').append(str);
+          });      
+          $(document).on('click','.delvlist',function(){
+             $(this).parent().parent().remove();
+          });      
+
+           $("body").on('click','#save',function(){
+             var names = document.getElementsByClassName('vlist_name')
+             var descs = document.getElementsByClassName('vlist_desc')
+             var namesArr = [];
+             var descsArr = [];
+             for(var i=0;i<names.length;i++) {
+                  if(names[i].innerHTML == '') {
+                    layer.msg('变量名称不能为空',{icon: 5,time:1000});
+                    return;
+                  }
+                  namesArr.push(names[i].innerHTML);
+             }
+             for(var i=0;i<descs.length;i++) {
+                  descsArr.push(descs[i].innerHTML);
+             }
+              $.ajax({
+                url:"{:url('admin/variable/addvlist')}",
+                type:'post',
+                data:{namesArr:namesArr,descsArr:descsArr,id:$(this).data('id')},
+                success:function(res){
+                  layer.msg(res.errortip,{icon: 5,time:1000});
+                },
+                error:function(){
+                  layer.msg('服务器繁忙,请稍后再试...',{icon: 5,time:1000});
+                }
+              });
+          });  
+      });   
+
+    </script>
+  </body>
+
+</html>

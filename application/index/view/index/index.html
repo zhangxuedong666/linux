@@ -1,0 +1,159 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>首页_个人博客 - 一个后端程序员的个人博客网站</title>
+<meta name="keywords" content="个人博客,杨青个人博客,个人博客模板,杨青" />
+<meta name="description" content="杨青个人博客，是一个站在web前端设计之路的女程序员个人网站，提供个人博客模板免费资源下载的个人原创网站。" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="/static/index/css/base.css" rel="stylesheet">
+<link href="/static/index/css/index.css" rel="stylesheet">
+<link href="/static/index/css/m.css" rel="stylesheet">
+<script src="/static/index/js/nav.js"></script>
+
+</head>
+<body >
+<header>
+  <div class="tophead">
+    <div class="logo"><a href="/">个人博客</a></div>
+<!--     <div id="mnav">
+      <h2><span class="navicon"></span></h2>
+      <ul>
+        <li><a href="index.html">网站首页</a></li>
+        <li><a href="about.html">关于我</a></li>
+        <li><a href="share.html">模板分享</a></li>
+        <li><a href="list.html">学无止境</a></li>
+        <li><a href="info.html">慢生活</a></li>
+        <li><a href="gbook.html">留言</a></li>
+      </ul>
+    </div> -->
+    <nav class="topnav" id="topnav">
+      <ul>
+        <li><a href="/">网站首页</a></li>
+        <li><a href="{:url('index/index/xlist')}">我的随笔</a></li>
+       <!-- <li><a href="{:url('index/other/about')}">关于我</a></li>-->
+<!--         <li><a href="list.html">学无止境</a></li>
+        <li><a href="info.html">慢生活</a></li>
+        <li><a href="gbook.html">留言</a></li> -->
+      </ul>
+    </nav>
+  </div>
+</header>
+{block name="lunbo"}
+<div class="picshow">
+  <ul>
+    <li><a href="/"><i><img src="/static/index/images/b01.jpg"></i>
+      <div class="font">
+        <h3>个人博客模板《早安》</h3>
+      </div>
+      </a></li>
+    <li><a href="/"><i><img src="/static/index/images/b02.jpg"></i>
+      <div class="font">
+        <h3>个人博客模板《早安》</h3>
+      </div>
+      </a></li>
+    <li><a href="/"><i><img src="/static/index/images/b03.jpg"></i>
+      <div class="font">
+        <h3>个人博客模板《早安》</h3>
+      </div>
+      </a></li>
+    <li><a href="/"><i><img src="/static/index/images/b04.jpg"></i>
+      <div class="font">
+        <h3>个人博客模板《早安》</h3>
+      </div>
+      </a></li>
+    <li><a href="/"><i><img src="/static/index/images/b05.jpg"></i>
+      <div class="font">
+        <h3>个人博客模板《早安》</h3>
+      </div>
+      </a></li>
+  </ul>
+</div>
+{/block}
+<article>
+  {block name="content"}
+  <div class="blogs">
+   {volist name='artList' id='v'}
+    <li> <span class="blogpic"><a href="/"><img src="{$v.article_img}"></a></span>
+      <h3 class="blogtitle"><a href="/">{$v.article_title}</a></h3>
+      <div class="bloginfo">
+        <p>{$v.article_desc}</p>
+      </div>
+      <div class="autor"><span class="lm">
+
+      {if $v.tags}
+      {volist name='$v.tags' id='vo'}
+      <a href="/" title="{$vo}" target="_blank" class="classname">{$vo}</a>
+      {/volist}
+      {/if}
+      </span><span class="dtime">{$v.article_addtime|date='Y-m-d'}</span><span class="viewnum">浏览（<a href="/">{$v.article_pv}</a>）</span><span class="readmore"><a href="{:url('index/info/info',['id'=>$v.article_id])}">阅读原文</a></span></div>
+    </li>
+    {/volist}
+  </div>
+  {/block}
+  {block name='bar'}
+  <div class="sidebar">
+<!--     <div class="about">
+      <div class="avatar"> <img src="/static/index/images/avatar.jpg" alt=""> </div>
+      <p class="abname">dancesmile | 杨青</p>
+      <p class="abposition">Web前端设计师、网页设计</p>
+      <div class="abtext"> 一个80后草根女站长！09年入行。一直潜心研究web前端技术，一边工作一边积累经验，分享一些个人博客模板，以及SEO优化等心得。 </div>
+    </div> -->
+    <div class="search">
+      <form action="{:url('index/index/search')}" method="post" name="searchform" id="searchform">
+        <input name="keyword" id="keyboard" class="input_text" value="{$keyword}" type="text" placeholder="请输入关键词">
+        <input name="Submit" class="input_submit" value="搜索" type="submit">
+      </form>
+    </div>
+    <div class="cloud">
+      <h2 class="hometitle">标签云</h2>
+      <ul>
+        {volist name='tagList' id='v'}
+        <a href="{:url('index/index/tag',['id'=>$v.tag_id])}">{$v.tag_name}</a> 
+        {/volist}
+      </ul>
+    </div>
+    <div class="paihang">
+      <h2 class="hometitle">点击排行</h2>
+      <ul>
+      {volist name='clickList' id='v'}
+        <li><b><a href="{:url('index/info/info',['id'=>$v.article_id])}">{$v.article_title}</a></b>
+          <p><i><img src="{$v.article_img}"></i>{$v.article_desc}</p>
+        </li>
+      {/volist}
+      </ul>
+    </div>
+<!--     <div class="paihang">
+      <h2 class="hometitle">站长推荐</h2>
+      <ul>
+      {volist name='recommendList' id='v'}
+        <li><b><a href="{:url('index/info/info',['id'=>$v.article_id])}">{$v.article_title}</a></b>
+          <p><i><img src="{$v.article_img}"></i>{$v.article_desc}</p>
+        </li>
+       {/volist}
+      </ul>
+    </div>
+    <div class="links">
+      <h2 class="hometitle">友情链接</h2>
+      <ul>
+        <li><a href="http://www.yangqq.com" title="杨青个人博客">杨青个人博客</a></li>
+        <li><a href="http://www.yangqq.com" title="杨青个人博客">杨青个人博客</a></li>
+        <li><a href="http://www.yangqq.com" title="杨青个人博客">杨青个人博客</a></li>
+      </ul>
+    </div> -->
+    {/block}
+<!--     <div class="weixin">
+      <h2 class="hometitle">官方微信</h2>
+      <ul>
+        <img src="/static/index/images/wx.jpg">
+      </ul>
+    </div> -->
+  </div>
+</article>
+
+<div class="blank"></div>
+<footer>
+  <p> <a href="/">个人博客</a> <a href="/">辽ICP备18000625号-1</a></p>
+</footer>
+</body>
+</html>

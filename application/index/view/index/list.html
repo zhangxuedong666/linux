@@ -1,0 +1,26 @@
+﻿{extend name="index/index" /}
+{block name="lunbo"}{/block}
+{block name="content"}
+  <h1 class="t_nav"><span>不要轻易放弃。学习成长的路上，我们长路漫漫，只因学无止境。 </span><a href="/" class="n1">网站首页</a><a href="{:url('index/other/about')}" class="n2">关于我</a></h1>
+  <div class="blogs">
+    <div class="mt20"></div>
+    {volist name='artList' id='v'}
+      <li> <span class="blogpic"><a href="/"><img src="{$v.article_img}"></a></span>
+        <h3 class="blogtitle"><a href="/">{$v.article_title}</a></h3>
+        <div class="bloginfo">
+          <p>{$v.article_desc}</p>
+        </div>
+        <div class="autor"><span class="lm">
+
+        {if $v.tags}
+        {volist name='$v.tags' id='vo' key='k'}
+        <a href="{:url('index/index/tag',['id'=>$key])}" title="{$vo}"  class="classname">{$vo}</a>
+        {/volist}
+        {/if}
+        </span><span class="dtime">{$v.article_addtime|date='Y-m-d'}</span><span class="viewnum">浏览（<a href="/">{$v.article_pv}</a>）</span><span class="readmore"><a href="{:url('index/info/info',['id'=>$v.article_id])}">阅读原文</a></span></div>
+      </li>
+    {/volist}   
+    {$page|raw}
+  
+  </div>
+{/block}

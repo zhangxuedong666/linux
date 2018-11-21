@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+  
+  <head>
+    <meta charset="UTF-8">
+    <title>欢迎页面-X-admin2.0</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" href="/static/admin/css/font.css">
+    <link rel="stylesheet" href="/static/admin/css/xadmin.css">
+    <script type="text/javascript" src="/static/admin/js/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/admin/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/admin/js/xadmin.js"></script>
+    <style>
+      .x-body{
+        display: flex;
+        flex-wrap: wrap;
+      }
+      #tag{
+        width: 400px;
+        display: flex;
+      }
+      #tag li {
+        height: 30px;
+        border: 1px solid #000;
+        margin-left: 5px;
+        line-height: 30px;
+        text-align: center;
+        cursor: pointer ;
+      }
+      .rb{
+        border: 1px solid #f00;
+      }
+      .cur{
+        background: #00BFFF;
+      }
+    </style>
+  </head>
+  
+  <body>
+    <div class="x-nav">
+      <span class="layui-breadcrumb">
+        <a href="">首页</a>
+        <a href="">演示</a>
+        <a>
+          <cite>导航元素</cite></a>
+      <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" href="javascript:location.replace(location.href);" title="刷新">
+        <i class="layui-icon" style="line-height:30px">ဂ</i></a>
+    </div>
+
+    <div class="x-body">
+    <!-- ................ -->
+          <div style="width:100%;">
+            <div class="layui-form-item">
+                <label class="layui-form-label">文章标题</label>
+                <div class="layui-input-block">
+                  <input type="text" name="article_title" id="article_title" lay-verify="title" autocomplete="off" placeholder="请输入标题" class="layui-input" value="{$artOne.article_title}">
+               </div>
+            </div>
+          </div>
+
+          <div style="width:100%;">
+            <div class="layui-form-item">
+                <label class="layui-form-label">文章短介绍</label>
+                <div class="layui-input-block">
+                  <input type="text" name="article_desc" id="article_desc" lay-verify="title" autocomplete="off" placeholder="请输入标文章短介绍" class="layui-input" value="{$artOne.article_desc}">
+               </div>
+            </div>
+          </div>
+      <!-- ......... -->
+        <div >
+          <!-- 加载编辑器的容器 -->
+          <script id="container" name="content" type="text/plain" style="height:580px">
+            {$artOne.article_content|raw}
+          </script>
+          <!-- 配置文件 -->
+          <script type="text/javascript" src="/static/ueditor/ueditor.config.js"></script>
+          <!-- 编辑器源码文件 -->
+          <script type="text/javascript" src="/static/ueditor/ueditor.all.js"></script>
+          <!-- 实例化编辑器 -->
+          <script type="text/javascript">
+              var ue = UE.getEditor('container',{
+                scaleEnabled:true//设置不自动调整高度
+                //scaleEnabled {Boolean} [默认值：false]//是否可以拉伸长高，(设置true开启时，自动长高失效)
+            });
+          </script>
+        </div>
+
+        <!-- ........... -->
+<!--         <div style="width:800px;height:675px;margin-left: 20px">
+          <div class="layui-form-item">
+              <label for="username" class="layui-form-label">文章分类</label>
+              <div class="layui-input-inline">
+                  <select id="shipping" name="shipping" class="valid">
+                   {volist name='cateList' id='v'}
+                      <option value="{$v.vlist_prarm}"{if $artOne.category_id eq $v.vlist_prarm}selected{/if}>{$v.vlist_name}</option>
+                   {/volist}
+                  </select>
+              </div>
+          </div> -->
+
+
+          <div class="layui-form-item">
+              <label for="username" class="layui-form-label">标签管理</label>
+              <ul id="tag">
+                {volist name='tagList' id='tagVar'}
+                <li data-id="{$tagVar.tag_id}" class="selecttag {if in_array($tagVar.tag_id,$curTagList)}cur{/if}">{$tagVar.tag_name}</li>
+                {/volist}
+              </ul>
+          </div>
+
+          <div class="layui-form-item">
+              <label for="L_repass" class="layui-form-label">
+              </label>
+              <button  class="layui-btn" lay-filter="add" lay-submit="" id="edit">
+                  编辑
+              </button>
+          </div>
+        </div>
+             <!-- ...... -->
+    </div>     
+  </body>
+</html>
+<script>
+$(function(){
+    $('#tag li').click(function(){
+       if(!$(this).hasClass('cur')) {
+          $(this).addClass('cur');
+       } else {
+           $(this).removeClass('cur');
+       }
+    })
+    $(document).on('click','#edit',function(){
+        var title = $('#article_title').val();
+        var desc = $('#article_desc').val();
+        var cate = 1;
+        var content = ue.getContent();
+        var curs = document.getElementsByClassName('cur');
+        var curArr = [];
+        for(var i=0;i<curs.length;i++) {
+          curArr.push(curs[i].dataset.id);
+        }
+        if(title=='') {
+          layer.msg('文章标题不能为空',{icon: 5,time:1000});
+          return;
+        }
+        if(title.length>100) {
+          layer.msg('文章标题不能超过100字',{icon: 5,time:1000});
+          return;
+        }
+        $.ajax({
+          url:"{:url('admin/article/editaction',['id'=>$artOne.article_id])}",
+          type:'post',
+          data:{article_title:title,article_content:content,category_id:cate,curArr:curArr,article_desc:desc},
+          success:function(res){
+            if(res.error==1) {
+                layer.msg(res.errortip,{time:1000});
+            }
+            if(res.error==0) {
+              layer.msg(res.errortip,{time:1000});
+              setTimeout(function(){
+                  window.location.href = "{:url('admin/article/index')}";
+              },1000);         
+            }
+          },
+          error:function(){
+            layer.msg('服务器繁忙,请稍后再试...',{time:1000});
+          }
+        });  
+    })
+  })
+</script>
